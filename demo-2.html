@@ -1,0 +1,86 @@
+<!--
+
+// Copyright 2014 William Malone (www.williammalone.com)
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Game Safe Demo</title>
+<style>* {
+	margin: 0;
+}</style>
+</head>
+<body>
+  <!--<article id="gameContainer"></article>-->
+  <img id="gameContainer" class="gameContainer" src="html5-game-resize-example-bg.jpg" alt="HTML5 Game Example" width="2560" height="1600" />
+  <script>(function () {
+  
+	var game = {
+		element: document.getElementById("gameContainer"),
+		width: 1280,
+		height: 800,
+		safeWidth: 1024,
+		safeHeight: 720
+	},
+	
+	resizeGame = function () {
+	
+		var viewport, newGameWidth, newGameHeight, newGameX, newGameY;
+						
+		// Get the dimensions of the viewport
+		viewport = {
+			width: window.innerWidth,
+			height: window.innerHeight
+		};
+		
+		// Determine game size
+		if (game.height / game.width > viewport.height / viewport.width) {
+			if (game.safeHeight / game.width > viewport.height / viewport.width) {
+			  // A
+			  newGameHeight = viewport.height * game.height / game.safeHeight;
+			  newGameWidth = newGameHeight * game.width / game.height;
+			} else {
+			  // B
+			  newGameWidth = viewport.width;
+			  newGameHeight = newGameWidth * game.height / game.width;
+			}
+		} else {
+			if (game.height / game.safeWidth > viewport.height / viewport.width) {
+				// C
+				newGameHeight = viewport.height;
+				newGameWidth = newGameHeight * game.width / game.height;
+			} else {
+				// D
+				newGameWidth = viewport.width * game.width / game.safeWidth;
+				newGameHeight = newGameWidth * game.height / game.width;
+			}
+		}
+		
+		game.element.style.width = newGameWidth + "px";
+		game.element.style.height = newGameHeight + "px";
+		  
+		newGameX = (viewport.width - newGameWidth) / 2;
+		newGameY = (viewport.height - newGameHeight) / 2;
+				
+		// Set the new padding of the game so it will be centered
+		game.element.style.margin = newGameY + "px " + newGameX + "px";
+	};
+
+window.addEventListener("resize", resizeGame);
+resizeGame();
+}())</script>
+</body>
+</html>
